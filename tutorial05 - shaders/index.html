@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Three.js 005</title>
+  <meta name="author" content="Jamie McGrory">
+  <link href="https://fonts.googleapis.com/css?family=Athiti:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+	<script src="js/three.js"></script>
+	<script type="x-shader/x-vertex" id="vertexShader">
+    attribute float vertexDisplacement;
+    uniform float delta;
+    varying float vOpacity;
+    varying vec3 vUv;
+
+
+    void main(){
+      vUv = position;
+      vOpacity = vertexDisplacement;
+      vec3 p = position;
+      p.x = sin(vertexDisplacement) * 50.0 ;
+      p.y = cos(vertexDisplacement) * 50.0 ;
+
+      vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
+      gl_Position = projectionMatrix * modelViewPosition;
+    }
+  </script>
+	<script type="x-shader/x-fragment" id="fragmentShader">
+    uniform float delta;
+    varying float vOpacity;
+    varying vec3 vUv;
+
+    void main(){
+      float r = 1.0 + cos(vUv.x * delta);
+      float g = 0.5 + sin(delta) * 0.5;
+      float b = 0.0;
+
+      gl_FragColor = vec4(r, g, b, vOpacity);
+    }
+  </script>
+	<script src="js/scripts.js"></script>
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+</body>
+</html>
